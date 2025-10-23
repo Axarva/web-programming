@@ -1,0 +1,5 @@
+pre code {
+    white-space: pre !important;
+    /* Optionally, set the font-size smaller if you want longer lines to fit */
+    /* font-size: 8pt; */
+}

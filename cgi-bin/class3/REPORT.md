@@ -19,7 +19,7 @@ sample3-1.txt 内の文字列の出現回数をカウントするRubyスクリ�
 # 学籍番号: 202513228  
 # 氏名: Timsina Atharva 
 # 授業名: Webプログラミング  
-# 教員名: 永森 光晴  
+# 教員名: 永森 光晴 先生
 # 第3回課題1 提出プログラム  
 
 open("sample3-1.txt", "r:UTF-8") do |io|  
@@ -71,13 +71,25 @@ Z = 7
 **提出プログラム:**
 
 1. **enquete_form.rb**  
+
+ノート：PDFに変更する場合よくレンダーされないため
+```rb
+  puts "<input type=\"checkbox\" name=\"vote\" value=\"\#{label_text}\">" "#{label_text}<br>"
+```
+を
+```rb  
+puts "<input type=\"checkbox\" name=\"vote\" value=\"#{label_text}\">" \
+     "#{label_text}<br>"
+```
+として書いてあります。
+
 ```rb  
 #!/usr/bin/env ruby  
 # encoding: utf-8  
 # 学籍番号: 202513228  
 # 氏名: Timsina Atharva 
 # 授業名: Webプログラミング  
-# 教員名: 永森 光晴  
+# 教員名: 永森 光晴 先生
 # 第3回課題2 提出プログラム  
 
 require 'cgi'  
@@ -114,7 +126,8 @@ print <<EOF_HEADER
 EOF_HEADER  
 
 question_array.each do |label_text|  
-  puts "<input type=\"checkbox\" name=\"vote\" value=\"#{label_text}\"> #{label_text}<br>"  
+  puts "<input type=\"checkbox\" name=\"vote\" value=\"#{label_text}\">" \
+     "#{label_text}<br>"
 end  
 
 print <<EOF  
@@ -136,7 +149,7 @@ EOF
 # 学籍番号: 202513228  
 # 氏名: Timsina Atharva 
 # 授業名: Webプログラミング  
-# 教員名: 永森 光晴  
+# 教員名: 永森 光晴 先生
 # 第3回課題2 提出プログラム  
 
 require 'cgi'  
@@ -162,6 +175,7 @@ begin
         selected_votes.each do |vote|
             data.puts(vote)
         end
+    end
 rescue => ex
     print cgi.header("text/html; charset=utf-8")
     print <<EOS_ERROR
@@ -192,7 +206,7 @@ EOF
 # 学籍番号: 202513228  
 # 氏名: Timsina Atharva 
 # 授業名: Webプログラミング  
-# 教員名: 永森 光晴  
+# 教員名: 永森 光晴 先生
 # 第3回課題2 提出プログラム  
 
 require 'cgi'  

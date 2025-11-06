@@ -1,0 +1,65 @@
+<%
+# encoding: utf-8 
+# 学籍番号: 202513228
+# 氏名: Timsina Atharva
+# 授業名: Webプログラミング
+# 教員名: 永森 光晴 先生
+# 第5回課題1 提出プログラム
+%>
+
+<%
+require 'cgi'
+require 'sqlite3'
+require 'erb'
+
+cgi = CGI.new
+print cgi.header("text/html; charset=utf-8")
+
+questions = Array.new
+error_message = nil
+questions_data = Array.new
+
+begin
+  SQLite3::Database.new("report1030.db") do |db|
+    db.transaction(){
+      questions = db.execute("SELECT id, question FROM questions;")
+
+      questions.each do |qid, question_text|
+        result_tally = db.execute("SELECT COUNT(*) FROM votes WHERE question_id = ?;", [qid])
+        result_total = result_tally[0][0]
+        results = db.execute("SELECT question_id, name, COUNT(*) FROM votes WHERE question_id = ? GROUP BY name", [qid])
+        questions_data.push({question: question_text, total: result_total, result: results})
+      end
+    }
+  end
+rescue => ex
+  error_message = ex.message
+  error_backtrace = CGI.escapeHTML(ex.backtrace.join("\n"))
+end
+%>
+
+<html>
+  <head><meta charset="utf-8"><title>投票システム</title></head>
+  <body>
+    <h1>投票結果</h1>
+    <% if error_message.nil? %>
+      <% questions_data.each do |data| %>
+        <h2><%= ERB::Util.h(data[:question]) %></h2>
+        <p>投票数 =  <%= data[:total] %></p>
+        <ul>
+          <% data[:result].each do |vote_result| %>
+            <% result_name = vote_result[1] %>
+            <% result_count = vote_result[2] %>
+            <li><%= ERB::Util.h(result_name) %>: <%= result_count %></li>
+          <% end %>
+        </ul><br>
+      <% end %>
+    <% else %>
+      <pre>
+        <%= error_message %>
+        <%= error_backtrace %>
+      </pre>
+    <% end %>
+    <p><a href="enquete_form2.rb">投票に戻る</a></p>
+  </body>
+</html>

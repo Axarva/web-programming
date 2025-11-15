@@ -13,7 +13,6 @@ print cgi.header("text/html; charset=utf-8")
 
 # Initialize global variables
 question_array = Array.new
-question = "エラー: 質問が読み込めませんでした"
 
 begin
     print <<EOF_HEADER
@@ -46,7 +45,7 @@ EOF_HEADER
       <input type="reset" value="クリア">
       <input type="submit" value="送信">
       </form>
-      <p><a href="view_result2.rb">投票結果を見る</a></p>
+      <p><a href="view_result.rhtml">投票結果を見る</a></p>
       </body>
       </html>
 EOB

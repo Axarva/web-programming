@@ -32,5 +32,10 @@ print <<EOF_HEADER
           <input type='radio' name='option' value='チョキ'>チョキ
           <input type='radio' name='option' value='パー'>パー
           <input type="submit" value="勝負！">
+          
+        </form>
+        <form action="judge_cookie.rb" method="post">
+          <input type="hidden" name="cookiereset" value="COOKIE_RESET">
+          <input type="submit" value="勝敗をリセット">
         </form>
 EOF_HEADER

@@ -9,13 +9,31 @@
 require 'cgi'
 cgi = CGI.new
 
+# Global variables
 cookies = cgi.cookies
 user_hand = cgi.params['option'].first
 
+# Reset button functionality
+if cgi.params['cookiereset'].first
+  new_cookies = []
+  new_cookies.push(CGI::Cookie.new("name" => "wins", "value" => "0"))
+  new_cookies.push(CGI::Cookie.new("name" => "losses", "value" => "0"))
+  new_cookies.push(CGI::Cookie.new("name" => "draws", "value" => "0"))
+
+  print cgi.header("type" => "text/html", "charset" => "utf-8", "cookie" => new_cookies)
+  print <<EOF_RESET
+    <html><body>
+    <h1>勝敗をリセットしました！</h1>
+    <p><a href="janken_cookie.rb">もう一度勝負する？</a></p>
+    </body></html>
+EOF_RESET
+  exit
+end
+
+# Error handling on empty input
 if user_hand.nil?
   print cgi.header("text/html; charset=utf-8")
   print <<EOF_EMPTY
-
     <html><body>
     <h1>エラー: 手が選択されていません</h1>
     <p>選択肢を一つ選んでください。</p>
@@ -25,7 +43,7 @@ EOF_EMPTY
   exit
 end
 
-
+# Game logic
 win_count = (cookies["wins"][0] || 0).to_i
 loss_count = (cookies["losses"][0] || 0).to_i
 draw_count = (cookies["draws"][0] || 0).to_i
@@ -42,7 +60,7 @@ result = user_val.to_i - comp_val.to_i
 # 0 is draw
 # 1 is loss
 # 2 is win
-result_code = (result + 3) % 3 #This makes 0 = draw, 1 = loss, 2 = win
+result_code = (result + 3) % 3 # This makes 0 = draw, 1 = loss, 2 = win
 
 case result_code
 when 0
@@ -66,6 +84,8 @@ new_cookies.push(CGI::Cookie.new("name" => "draws", "value" => draw_count.to_s))
 
 
 print cgi.header("type" => "text/html", "charset" => "utf-8", "cookie" => new_cookies)
+
+# Show webpage
 print <<EOF
 <html>
 <head>

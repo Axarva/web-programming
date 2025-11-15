@@ -67,7 +67,7 @@ print <<EOF
   <html><body>
   <p>投票ありがとうございました。</p>
   <br>
-  <a href="view_result2.rb">投票結果を見る</a><br>
+  <a href="view_result.rhtml">投票結果を見る</a><br>
   <a href="enquete_form2.rb">投票に戻る</a><br>
   </body></html>
 EOF

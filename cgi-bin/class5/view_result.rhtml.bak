@@ -5,7 +5,9 @@
 # 授業名: Webプログラミング
 # 教員名: 永森 光晴 先生
 # 第5回課題1 提出プログラム
+%>
 
+<%
 require 'sqlite3'
 require 'erb'
 
@@ -13,28 +15,20 @@ questions = Array.new
 error_message = nil
 questions_data = Array.new
 
-# The fixed database path is used for the development environment.
-# This path must be an absolute path on the university server (e.g., /home/uid/wwws/cgi-bin/...).
 begin
   SQLite3::Database.new("cgi-bin/class5/report1030.db") do |db|
     db.transaction(){
       questions = db.execute("SELECT id, question FROM questions;")
 
       questions.each do |qid, question_text|
-        
-        # Get the total number of votes for the current question using COUNT(*).
         result_tally = db.execute("SELECT COUNT(*) FROM votes WHERE question_id = ?;", [qid])
-        result_total = result_tally[0][0] 
-        
-        # Get the vote count for each distinct choice name using GROUP BY.
+        result_total = result_tally[0][0]
         results = db.execute("SELECT question_id, name, COUNT(*) FROM votes WHERE question_id = ? GROUP BY name", [qid])
-        
         questions_data.push({question: question_text, total: result_total, result: results})
       end
     }
   end
 rescue => ex
-  # Handle exceptions.
   error_message = ex.message
   error_backtrace = CGI.escapeHTML(ex.backtrace.join("\n"))
 end
@@ -46,7 +40,6 @@ end
     <h1>投票結果</h1>
     <% if error_message.nil? %>
       <% questions_data.each do |data| %>
-        <!-- ERB::Util.h is used to escape HTML special characters for security -->
         <h2><%= ERB::Util.h(data[:question]) %></h2>
         <p>投票数 =  <%= data[:total] %></p>
         <ul>
@@ -58,7 +51,6 @@ end
         </ul><br>
       <% end %>
     <% else %>
-      <!-- Display error if anything goes wrong -->
       <pre>
         <%= error_message %>
         <%= error_backtrace %>

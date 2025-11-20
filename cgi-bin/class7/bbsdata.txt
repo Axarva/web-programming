@@ -1,0 +1,10 @@
+Me : Hello world
+Hara : 5 < 3 and 6 > 2.
+Asa : <script> is an HTML tag.
+yes : <script>
+a : <foo>
+a : </script>
+Yoo : 5 < 6
+Heye : x < y
+yo : x < y
+Asa : a<b
